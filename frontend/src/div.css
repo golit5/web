@@ -1,0 +1,48 @@
+div#root {
+    justify-self:center;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 20px 20px 20px;
+    max-width: 500px;
+    min-width: 300px;
+    width: 100%;
+}
+
+div.general {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+div#links li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px 16px;
+    margin-bottom: 10px;
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+  
+div#links a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+  
+div#links a:hover {
+    color: #45a049;
+}
+
+div#links ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
