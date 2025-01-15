@@ -1,7 +1,8 @@
-package main
+package app
 
 import (
 	"log"
+	_ "myapp/docs"
 	"myapp/internal/controller"
 	"myapp/internal/model"
 	"myapp/internal/repository"
@@ -9,13 +10,18 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func main() {
-	// Подключаемся к базе данных
-	dsn := "host=localhost user=myuser password=mypassword dbname=myapp_db port=5432 sslmode=disable"
+// StartApp запускает приложение и настраивает все маршруты
+// @Summary Запуск приложения
+// @Description Настройка базы данных, репозиториев, сервисов и маршрутов API
+// @Tags app
+// @Accept json
+// @Produce json
+func StartApp(dsn string) {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("could not connect to database: %v", err)
@@ -35,7 +41,7 @@ func main() {
 	// Настройка CORS middleware
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},                                       // Разрешить все источники или замените на конкретные URL
-		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT"},        // Разрешаем методы, включая OPTIONS для preflight-запросов
+		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT"},            // Разрешаем методы, включая OPTIONS для preflight-запросов
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Разрешенные заголовки
 		ExposeHeaders:    []string{"Content-Length"},                          // Заголовки, которые могут быть видны клиенту
 		AllowCredentials: true,                                                // Разрешаем cookies
@@ -48,6 +54,10 @@ func main() {
 	r.GET("/links/:id", linkController.GetLinkByID)
 	r.PUT("/links/:id", linkController.UpdateLink)
 	r.DELETE("/links/:id", linkController.DeleteLink)
+
+	r.GET("/swagger/*any", func(c *gin.Context) {
+		httpSwagger.WrapHandler(c.Writer, c.Request)
+	})
 
 	// Запуск сервера
 	r.Run(":8080")

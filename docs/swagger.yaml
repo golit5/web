@@ -1,0 +1,145 @@
+definitions:
+  model.Link:
+    description: Модель для работы с ссылками
+    properties:
+      created_at:
+        description: '@example "2025-01-15T00:00:00Z"'
+        type: string
+      id:
+        description: '@example 1'
+        type: integer
+      title:
+        description: '@example "Example"'
+        type: string
+      url:
+        description: '@example "https://example.com"'
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Конфигурация подключения к базе данных
+paths:
+  /links:
+    get:
+      description: Получить все ссылки из базы данных
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Link'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Получить все ссылки
+      tags:
+      - links
+    post:
+      consumes:
+      - application/json
+      description: Создает ссылку в базе данных
+      parameters:
+      - description: Link object
+        in: body
+        name: link
+        required: true
+        schema:
+          $ref: '#/definitions/model.Link'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Link'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+      summary: Создание новой ссылки
+      tags:
+      - links
+  /links/{id}:
+    delete:
+      description: Удалить ссылку из базы данных по ID
+      parameters:
+      - description: Link ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Link deleted
+          schema:
+            type: string
+        "404":
+          description: Link not found
+          schema:
+            type: string
+      summary: Удалить ссылку
+      tags:
+      - links
+    get:
+      description: Получить ссылку по ее уникальному идентификатору
+      parameters:
+      - description: Link ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Link'
+        "404":
+          description: Link not found
+          schema:
+            type: string
+      summary: Получить ссылку по ID
+      tags:
+      - links
+    put:
+      consumes:
+      - application/json
+      description: Обновить ссылку в базе данных
+      parameters:
+      - description: Link ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated link object
+        in: body
+        name: link
+        required: true
+        schema:
+          $ref: '#/definitions/model.Link'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Link'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "404":
+          description: Link not found
+          schema:
+            type: string
+      summary: Обновить ссылку
+      tags:
+      - links
+swagger: "2.0"
